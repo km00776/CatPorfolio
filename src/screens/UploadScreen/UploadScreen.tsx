@@ -24,7 +24,7 @@ const UploadScreen = () => {
     }
   };
 
-  return <Button title="Open Camera" onPress={() => {}} />;
+  return <Button title="Open Gallery" onPress={() => {}} />;
 };
 
 export default UploadScreen;
