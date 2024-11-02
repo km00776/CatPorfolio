@@ -8,7 +8,7 @@ import {
 } from '../constants/screenNames';
 import FavouritesScreen from '../screens/FavouritesScreen/FavouritesScreen';
 import UploadScreen from '../screens/UploadScreen/UploadScreen';
-import Icon from 'react-native-vector-icons/AntDesign'; // Import Ant Design icons
+import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons
 
 const Tab = createBottomTabNavigator();
 
@@ -19,11 +19,11 @@ const tabBarIcon =
 
     // Set icon based on the route name
     if (route.name === HOME_SCREEN) {
-      iconName = focused ? 'home' : 'home';
+      iconName = focused ? 'home' : 'home-outline'; // Filled and outlined versions for home
     } else if (route.name === FAVOURITES_SCREEN) {
-      iconName = focused ? 'heart' : 'heart';
+      iconName = focused ? 'heart' : 'heart-outline'; // Filled and outlined for heart
     } else if (route.name === UPLOAD_SCREEN) {
-      iconName = focused ? 'camera' : 'camera';
+      iconName = focused ? 'cloud-upload' : 'cloud-upload-outline'; // Filled and outlined for upload
     }
 
     // Return the icon component
@@ -33,9 +33,13 @@ const tabBarIcon =
 const TabNavigator = () => (
   <Tab.Navigator
     screenOptions={({route}) => ({
-      tabBarIcon: tabBarIcon(route), // Call the tabBarIcon function
-      tabBarActiveTintColor: 'tomato', // Active icon color
-      tabBarInactiveTintColor: 'gray', // Inactive icon color
+      tabBarIcon: tabBarIcon(route),
+      tabBarActiveTintColor: 'tomato',
+      tabBarInactiveTintColor: 'gray',
+      tabBarLabelStyle: {
+        fontSize: 12,
+        paddingBottom: 3,
+      },
     })}>
     <Tab.Screen
       name={HOME_SCREEN}
