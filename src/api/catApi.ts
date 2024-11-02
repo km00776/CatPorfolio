@@ -72,3 +72,45 @@ export const fetchFavouritedCats = async () => {
     );
   }
 };
+//DELETE
+export const removeFavouritedCat = async () => {};
+
+export const fetchCatVotes = async () => {
+  try {
+    const response = await fetch('https://api.thecatapi.com/v1/votes', {
+      headers: HEADERS,
+    });
+    if (!response.ok) {
+      throw new Error('Network request was not ok');
+    }
+    const data = response.json();
+    return data;
+  } catch (error) {
+    throw new Error(
+      `Failed to fetch votes: ${
+        error instanceof Error ? error.message : 'Unknown Error'
+      }`,
+    );
+  }
+};
+
+export const postCatVote = async ({imageId, value}: any) => {
+  try {
+    const response = await fetch('https://api.thecatapi.com/v1/votes', {
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify({imageId, value}),
+    });
+    if (!response.ok) {
+      throw new Error('Network request was not ok');
+    }
+    const data = response.json();
+    return data;
+  } catch (error) {
+    throw new Error(
+      `Failed to post vote: ${
+        error instanceof Error ? error.message : 'Unknown Error'
+      }`,
+    );
+  }
+};
