@@ -1,13 +1,16 @@
 import React from 'react';
 import {ImageBackground, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons
-const PLACE_HOLDER = require('../../../assets/images/imgDogCard.png'); // Adjust the path
 
-const CatCard = () => {
+interface CatCardProps {
+  imageUrl: string;
+}
+
+const CatCard = ({imageUrl}: CatCardProps) => {
   return (
     <View className="w-4/5 h-96 bg-white rounded-3xl border border-gray-300 items-center">
       <ImageBackground
-        source={PLACE_HOLDER}
+        source={{uri: imageUrl}}
         resizeMode="cover"
         className="w-10/12	h-4/6	 rounded-3xl border border-gray-300 my-4 overflow-hidden">
         <View className="flex-row	justify-end w-full">
