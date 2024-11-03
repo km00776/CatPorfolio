@@ -1,8 +1,9 @@
 import React from 'react';
-import {ActivityIndicator, Alert, Button} from 'react-native';
+import {Alert, Button} from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import useCats from '../../hooks/useCats';
 import {requestGalleryPermission} from '../../util/permission';
+import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner';
 
 const UploadScreen = () => {
   const {postCatImageMutation} = useCats();
@@ -49,7 +50,7 @@ const UploadScreen = () => {
   };
   // need to update this
   if (postCatImageMutation.isPending) {
-    return <ActivityIndicator />;
+    return <LoadingSpinner />;
   }
 
   return <Button title="Open Gallery" onPress={() => handleOpenGallery()} />;

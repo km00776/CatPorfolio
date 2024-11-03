@@ -1,22 +1,25 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, FlatList, ActivityIndicator, Text} from 'react-native';
-// import useCats from '../hooks/useCats';
-// import CatCard from '../components/CatCard';
-// import {CatType} from '../types/catTypes';
+import {View, FlatList, Text} from 'react-native';
+
 import useCats from '../../hooks/useCats';
 import CatCard from '../../components/CatCard/CatCard';
 import {CatType} from '../../types/catTypes';
+import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner';
+
 const HomeScreen = () => {
   const {cats, isLoadingCats, isErrorCats} = useCats();
 
   if (isLoadingCats) {
-    return <ActivityIndicator />;
+    return <LoadingSpinner />;
   }
   if (isErrorCats) {
-    return <Text>Something went wrong</Text>;
+    return (
+      <View className="flex-1 justify-center items-center">
+        <Text>Something went wrong... Please try again later!</Text>;
+      </View>
+    );
   }
-  console.log('cats', cats);
   const renderCatItem = ({item}: {item: CatType}) => {
     return <CatCard imageUrl={item.url} imageId={item.id} />;
   };
