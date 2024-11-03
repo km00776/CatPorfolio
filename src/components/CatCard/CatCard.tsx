@@ -1,12 +1,41 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {ImageBackground, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons
+import {FavouritedCatType} from '../../types/catTypes';
+import CatCardVoting from './CatCardVoting/CatCardVoting';
+import useFavouritedCats from '../../hooks/useFavouritedCats';
 
 interface CatCardProps {
   imageUrl: string;
+  imageId: string;
 }
 
-const CatCard = ({imageUrl}: CatCardProps) => {
+const CatCard = ({imageUrl, imageId}: CatCardProps) => {
+  const {
+    postFavouriteCatMutation,
+    favouritedCats,
+    deleteFavouritedCatMutation,
+  } = useFavouritedCats();
+
+  console.log('favouritedCats', favouritedCats);
+
+  const favouritedId = useMemo(() => {
+    if (favouritedCats) {
+      const favourite = favouritedCats.find(
+        (favCat: FavouritedCatType) => favCat.image_id === imageId,
+      );
+      return favourite ? favourite.id : null;
+    }
+  }, [favouritedCats, imageId]);
+
+  const onFavouritePress = () => {
+    if (favouritedId) {
+      deleteFavouritedCatMutation.mutate(favouritedId);
+    } else {
+      postFavouriteCatMutation.mutate(imageId);
+    }
+  };
+
   return (
     <View className="w-4/5 h-96 bg-white rounded-3xl border border-gray-300 items-center">
       <ImageBackground
@@ -16,31 +45,17 @@ const CatCard = ({imageUrl}: CatCardProps) => {
         <View className="flex-row	justify-end w-full">
           <Icon
             className="mr-4  my-4"
-            name="heart-outline"
+            name={favouritedId ? 'heart' : 'heart-outline'}
             size={24}
-            color="white"
+            color="pink"
+            onPress={onFavouritePress}
             accessible={true}
             accessibilityLabel="Click this to favourite image"
           />
         </View>
       </ImageBackground>
-      <View className="flex-row	justify-end w-full mr-10">
-        <Icon
-          className="mr-2"
-          name="thumbs-up-outline"
-          size={22}
-          color="green"
-          accessible={true}
-          accessibilityLabel="Click this to upvote image"
-        />
-        <Icon
-          name="thumbs-down-outline"
-          size={22}
-          color="red"
-          accessible={true}
-          accessibilityLabel="Click this to downvote image"
-        />
-      </View>
+
+      <CatCardVoting imageId={imageId} />
     </View>
   );
 };

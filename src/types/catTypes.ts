@@ -9,3 +9,16 @@ export interface CatType {
   url: string;
   width: number;
 }
+export interface FavouritedCatType {
+  id: number;
+  user_id: string;
+  image_id: string;
+  sub_id: string;
+  created_at: string;
+  image: FavouritedCatImage;
+}
+
+export interface FavouritedCatImage {
+  id: string;
+  url: string;
+}

@@ -17,9 +17,9 @@ const HomeScreen = () => {
   if (isErrorCats) {
     return <Text>Something went wrong</Text>;
   }
-
+  console.log('cats', cats);
   const renderCatItem = ({item}: {item: CatType}) => {
-    return <CatCard imageUrl={item.url} />;
+    return <CatCard imageUrl={item.url} imageId={item.id} />;
   };
 
   return (

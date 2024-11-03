@@ -1,44 +1,30 @@
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {fetchCats, fetchFavouritedCats, postCat} from '../api/catApi';
-
-export interface CatUploadResponse {
-  id: string;
-  url: string;
-  // Other fields as needed
-}
+import {useQuery, useMutation, useQueryClient} from '@tanstack/react-query';
+import {fetchCats, postCatImage} from '../api/catApi';
 
 const useCats = () => {
   const queryClient = useQueryClient();
 
-  const catsQuery = useQuery({queryKey: ['cats'], queryFn: fetchCats});
-
-  const favouritedCatsQuery = useQuery({
-    queryKey: ['favouritedCats'],
-    queryFn: fetchFavouritedCats,
+  const catsQuery = useQuery({
+    queryKey: ['cats'],
+    queryFn: fetchCats,
   });
 
-  // const addCatMutation = useMutation<CatUploadResponse, Error, string>(
-  //   postCat,
-  //   {
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries({ queryKey: ["cats"] });
-  //     },
-  //     onError: (error: any) => {
-  //       console.error("Error uploading cat image:", error.message);
-  //     },
-  //   }
-  // );
+  const postCatImageMutation = useMutation({
+    mutationFn: postCatImage,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['cats']});
+    },
+    onError: (error: any) => {
+      console.error('Error uploading cat image:', error.message);
+    },
+  });
 
   return {
     cats: catsQuery.data,
     isLoadingCats: catsQuery.isLoading,
     isErrorCats: catsQuery.isError,
     refetchCats: catsQuery.refetch,
-
-    favouritedCats: favouritedCatsQuery.data,
-    isLoadingFavouritedCats: favouritedCatsQuery.data,
-    isErrorFavouritedCats: favouritedCatsQuery.data,
-    refetchFavouritedCats: catsQuery.refetch,
+    postCatImageMutation,
   };
 };
 
