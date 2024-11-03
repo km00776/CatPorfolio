@@ -1,9 +1,9 @@
 import {CAT_API_BASE_URL} from '../constants/url';
 import {VoteType} from '../types/voteTypes';
+import {API_KEY} from '@env';
 
 const HEADERS = {
-  'x-api-key':
-    'live_05fPDmjaq25eNtqn95DHWDzk76Xgd90yZSZnCWq7Xad3BGc7M7VOgxebObQtg8Zd',
+  'x-api-key': API_KEY,
 };
 
 export const fetchCats = async () => {

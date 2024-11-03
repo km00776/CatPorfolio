@@ -7,7 +7,6 @@ import {View, FlatList, ActivityIndicator, Text} from 'react-native';
 import useCats from '../../hooks/useCats';
 import CatCard from '../../components/CatCard/CatCard';
 import {CatType} from '../../types/catTypes';
-
 const HomeScreen = () => {
   const {cats, isLoadingCats, isErrorCats} = useCats();
 
