@@ -3,11 +3,9 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "strict": true,
-    "jsx": "react-native"
+    "jsx": "react-native",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
-  "include": [
-    "src",
-    "env.d.ts",
-    "nativewind-env.d.ts"
-  ]
+  "include": ["src", "env.d.ts", "nativewind-env.d.ts"]
 }
