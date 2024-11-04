@@ -7,6 +7,11 @@ List of Libraries used:
 
 # Getting Started
 
+1. Please make sure to create a .env file in the root of the project -->
+
+API_KEY=(comes from the api) --> please let me know if you need the key
+API_BASE_URL=https://api.thecatapi.com/v1
+
 > **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 ## Step 1: Start the Metro Server
