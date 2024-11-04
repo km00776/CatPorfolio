@@ -14,7 +14,7 @@ const HomeScreen = () => {
   }
   if (isErrorCats) {
     return (
-      <View className="flex-1 justify-center items-center">
+      <View className="flex-1 justify-center items-center bg-white">
         <Text>Something went wrong... Please try again later!</Text>
       </View>
     );
@@ -22,7 +22,7 @@ const HomeScreen = () => {
 
   if (cats?.length === 0) {
     return (
-      <View className="flex-1 justify-center items-center">
+      <View className="flex-1 justify-center items-center bg-white">
         <Text>You currently have uploaded no cat photos</Text>
       </View>
     );

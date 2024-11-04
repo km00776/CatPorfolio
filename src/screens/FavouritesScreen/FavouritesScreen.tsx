@@ -17,7 +17,7 @@ const FavouritesScreen = () => {
     return <ActivityIndicator />;
   }
   if (isErrorFavouritedCats) {
-    return <Text>Something went wrong</Text>;
+    return <Text>Something went wrong... Please try again later</Text>;
   }
 
   return (
