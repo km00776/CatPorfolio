@@ -6,7 +6,7 @@ import {
   Text,
   ActivityIndicator,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons
+import Icon from 'react-native-vector-icons/Ionicons';
 import {FavouritedCatType} from '../../types/catTypes';
 import CatCardVoting from './components/CatCardVoting/CatCardVoting';
 import useFavouritedCats from '../../hooks/useFavouritedCats';
