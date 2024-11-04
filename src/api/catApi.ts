@@ -22,10 +22,10 @@ import {
   VoteType,
 } from '../types/voteTypes';
 
-const apiKey = process.env.API_KEY || ''; // Default to an empty string
+import {API_KEY} from '@env';
 
 const createHeaders = (contentType = 'application/json') => ({
-  'x-api-key': apiKey,
+  'x-api-key': API_KEY,
   'Content-Type': contentType,
 });
 
@@ -73,7 +73,7 @@ export const postCatImage = async (
     uri,
     name: 'cat_image.jpg',
     type: 'image/jpeg',
-  });
+  } as unknown as Blob);
 
   return apiRequest<PostCatImageResponseType>(
     ENDPOINTS.IMAGES_UPLOAD_URL,
