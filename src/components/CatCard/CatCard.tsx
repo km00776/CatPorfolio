@@ -1,9 +1,11 @@
 import React, {useMemo} from 'react';
-import {ImageBackground, View} from 'react-native';
+import {ImageBackground, TouchableOpacity, View, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons
 import {FavouritedCatType} from '../../types/catTypes';
-import CatCardVoting from './CatCardVoting/CatCardVoting';
+import CatCardVoting from './components/CatCardVoting/CatCardVoting';
 import useFavouritedCats from '../../hooks/useFavouritedCats';
+import Colors from '../../constants/color';
+import useCatVotes from '../../hooks/useCatVotes';
 
 interface CatCardProps {
   imageUrl: string;
@@ -17,19 +19,20 @@ const CatCard = ({imageUrl, imageId}: CatCardProps) => {
     deleteFavouritedCatMutation,
   } = useFavouritedCats();
 
-  // const {postCatVoteMutation, votes} = useCatVotes();
+  const {votes} = useCatVotes();
+  const score = useMemo(() => {
+    if (votes) {
+      const upVotes = votes.filter(
+        vote => vote.image_id === imageId && vote.value === 1,
+      ).length;
+      const downVotes = votes.filter(
+        vote => vote.image_id === imageId && vote.value === -1,
+      ).length;
 
-  // console.log('votes', votes);
-
-  // const handleUpVote = () => {
-  //   const data = {imageId, value: 1};
-  //   postCatVoteMutation.mutate(data);
-  // };
-
-  // const handleDownVote = () => {
-  //   const data = {imageId, value: -1};
-  //   postCatVoteMutation.mutate(data);
-  // };
+      return upVotes - downVotes;
+    }
+    return 0;
+  }, [votes, imageId]);
 
   const favouritedId = useMemo(() => {
     if (favouritedCats) {
@@ -49,34 +52,29 @@ const CatCard = ({imageUrl, imageId}: CatCardProps) => {
   };
 
   return (
-    <View
-      style={{
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 4},
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
-        elevation: 4, // Android shadow
-      }}
-      className="w-4/5 h-96 bg-white rounded-3xl border border-gray-300 items-center">
-      <ImageBackground
-        source={{uri: imageUrl}}
-        resizeMode="cover"
-        className="w-10/12	h-4/6	 rounded-3xl border border-gray-300 my-4 overflow-hidden">
-        <View className="flex-row	justify-end w-full">
+    <ImageBackground
+      source={{uri: imageUrl}}
+      resizeMode="cover"
+      className="w-4/5 h-96	 rounded-3xl border border-gray-300 my-4 overflow-hidden">
+      <View className="flex-row	justify-end w-full">
+        <TouchableOpacity
+          onPress={onFavouritePress}
+          className="rounded-full bg-orange-100 p-2 mr-3 my-3">
           <Icon
-            className="mr-4  my-4"
             name={favouritedId ? 'heart' : 'heart-outline'}
-            size={24}
-            color="pink"
-            onPress={onFavouritePress}
+            size={20}
+            color={Colors.darkOrange}
             accessible={true}
             accessibilityLabel="Click this to favourite image"
           />
-        </View>
-      </ImageBackground>
+        </TouchableOpacity>
+        <CatCardVoting imageId={imageId} />
+      </View>
 
-      <CatCardVoting imageId={imageId} />
-    </View>
+      <View className="bg-orange-100 rounded-lg p-2 mt-60	w-2/5 mx-5">
+        <Text className="text-orange-400 font-bold">Score: {score}</Text>
+      </View>
+    </ImageBackground>
   );
 };
 

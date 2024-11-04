@@ -1,7 +1,7 @@
 import React from 'react';
-import {View} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons
-import useCatVotes from '../../../hooks/useCatVotes';
+import useCatVotes from '../../../../hooks/useCatVotes';
 interface CatCardVotingProps {
   imageId: string;
 }
@@ -9,40 +9,41 @@ interface CatCardVotingProps {
 const CatCardVoting = ({imageId}: CatCardVotingProps) => {
   const {postCatVoteMutation} = useCatVotes();
 
-  const handleUpVote = () => {
+  const handleUpVotePress = () => {
     const data = {imageId, value: 1};
     postCatVoteMutation.mutate(data);
   };
 
-  const handleDownVote = () => {
+  const handleDownVotePress = () => {
     const data = {imageId, value: -1};
     postCatVoteMutation.mutate(data);
   };
 
   return (
-    <View className="flex-column items-center w-full">
-      <View className="flex-row justify-end w-full mr-10">
+    <>
+      <TouchableOpacity
+        onPress={handleUpVotePress}
+        className="rounded-full bg-orange-100 p-2 mr-3 my-3">
         <Icon
-          className="mr-2"
           name="thumbs-up-outline"
-          size={22}
-          color="green"
+          size={20}
+          color="#C05621"
           accessible={true}
-          onPress={handleDownVote}
           accessibilityLabel="Click this to upvote image"
         />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={handleDownVotePress}
+        className="rounded-full bg-orange-100 p-2 mr-3 my-3">
         <Icon
           name="thumbs-down-outline"
-          size={22}
-          color="red"
+          size={20}
+          color="#C05621"
           accessible={true}
-          onPress={handleUpVote}
-          accessibilityLabel="Click this to downvote image"
+          accessibilityLabel="Click this to upvote image"
         />
-      </View>
-
-      {/* Center the Votes text both horizontally and vertically */}
-    </View>
+      </TouchableOpacity>
+    </>
   );
 };
 

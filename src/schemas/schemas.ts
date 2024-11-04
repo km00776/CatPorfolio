@@ -50,7 +50,7 @@ export const PostVoteResponseSchema = z.object({
   message: z.string(),
   id: z.number(),
   image_id: z.string(),
-  sub_id: z.string(),
+  sub_id: z.string().optional(),
   value: z.number(),
   country_code: z.string(),
 });

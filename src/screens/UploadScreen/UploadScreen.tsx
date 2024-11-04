@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, Button} from 'react-native';
+import {Alert, Text, TouchableOpacity, View} from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import useCats from '../../hooks/useCats';
 import {requestGalleryPermission} from '../../util/permission';
@@ -20,7 +20,7 @@ const UploadScreen = () => {
     }
 
     const result = await launchImageLibrary({
-      mediaType: 'photo', // Specify photo media type
+      mediaType: 'photo',
     });
 
     if (result.didCancel) {
@@ -33,26 +33,31 @@ const UploadScreen = () => {
         postCatImageMutation.mutate(selectedImage.uri, {
           onSuccess: () => {
             Alert.alert('Image has successfully been uploaded');
-            // Optional: Update state or give user feedback
           },
           onError: () => {
             Alert.alert(
               'Upload Failed',
               'We were unable to upload your image. Please ensure you are uploading a valid image and try again.',
             );
-
-            // Optional: Handle error feedback to user here
           },
         });
       }
     }
   };
-  // need to update this
-  if (postCatImageMutation.isPending) {
-    return <LoadingSpinner />;
-  }
 
-  return <Button title="Open Gallery" onPress={() => handleOpenGallery()} />;
+  return (
+    <View className="flex-1 justify-center items-center bg-white">
+      {postCatImageMutation.isPending ? (
+        <LoadingSpinner />
+      ) : (
+        <TouchableOpacity
+          onPress={handleOpenGallery}
+          className="bg-orange-600 rounded-lg p-4">
+          <Text className="text-white font-bold text-md">Upload Cat Image</Text>
+        </TouchableOpacity>
+      )}
+    </View>
+  );
 };
 
 export default UploadScreen;

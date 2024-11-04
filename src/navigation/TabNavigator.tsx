@@ -9,6 +9,7 @@ import {
 import FavouritesScreen from '../screens/FavouritesScreen/FavouritesScreen';
 import UploadScreen from '../screens/UploadScreen/UploadScreen';
 import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons
+import Colors from '../constants/color';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,29 +18,34 @@ const tabBarIcon =
   ({focused}: any) => {
     let iconName = '';
 
-    // Set icon based on the route name
     if (route.name === HOME_SCREEN) {
-      iconName = focused ? 'home' : 'home-outline'; // Filled and outlined versions for home
+      iconName = focused ? 'home' : 'home-outline';
     } else if (route.name === FAVOURITES_SCREEN) {
-      iconName = focused ? 'heart' : 'heart-outline'; // Filled and outlined for heart
+      iconName = focused ? 'heart' : 'heart-outline';
     } else if (route.name === UPLOAD_SCREEN) {
-      iconName = focused ? 'cloud-upload' : 'cloud-upload-outline'; // Filled and outlined for upload
+      iconName = focused ? 'cloud-upload' : 'cloud-upload-outline';
     }
 
-    // Return the icon component
-    return <Icon name={iconName} size={20} color={'red'} />;
+    return <Icon name={iconName} size={20} color={Colors.white} />;
   };
 
 const TabNavigator = () => (
   <Tab.Navigator
     screenOptions={({route}) => ({
       tabBarIcon: tabBarIcon(route),
-      tabBarActiveTintColor: 'tomato',
-      tabBarInactiveTintColor: 'gray',
+      tabBarActiveTintColor: 'white',
+      tabBarInactiveTintColor: 'white',
       tabBarLabelStyle: {
         fontSize: 12,
         paddingBottom: 3,
       },
+      tabBarStyle: {
+        backgroundColor: Colors.darkOrange,
+      },
+      headerStyle: {
+        backgroundColor: Colors.darkOrange,
+      },
+      headerTintColor: Colors.white,
     })}>
     <Tab.Screen
       name={HOME_SCREEN}
