@@ -8,7 +8,7 @@ import {
 } from '../constants/screenNames';
 import FavouritesScreen from '../screens/FavouritesScreen/FavouritesScreen';
 import UploadScreen from '../screens/UploadScreen/UploadScreen';
-import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons
+import Icon from 'react-native-vector-icons/Ionicons';
 import Colors from '../constants/color';
 
 const Tab = createBottomTabNavigator();
