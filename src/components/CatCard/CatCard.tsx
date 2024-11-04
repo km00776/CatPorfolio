@@ -17,6 +17,20 @@ const CatCard = ({imageUrl, imageId}: CatCardProps) => {
     deleteFavouritedCatMutation,
   } = useFavouritedCats();
 
+  // const {postCatVoteMutation, votes} = useCatVotes();
+
+  // console.log('votes', votes);
+
+  // const handleUpVote = () => {
+  //   const data = {imageId, value: 1};
+  //   postCatVoteMutation.mutate(data);
+  // };
+
+  // const handleDownVote = () => {
+  //   const data = {imageId, value: -1};
+  //   postCatVoteMutation.mutate(data);
+  // };
+
   const favouritedId = useMemo(() => {
     if (favouritedCats) {
       const favourite = favouritedCats.find(
@@ -35,7 +49,15 @@ const CatCard = ({imageUrl, imageId}: CatCardProps) => {
   };
 
   return (
-    <View className="w-4/5 h-96 bg-white rounded-3xl border border-gray-300 items-center">
+    <View
+      style={{
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 4},
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+        elevation: 4, // Android shadow
+      }}
+      className="w-4/5 h-96 bg-white rounded-3xl border border-gray-300 items-center">
       <ImageBackground
         source={{uri: imageUrl}}
         resizeMode="cover"

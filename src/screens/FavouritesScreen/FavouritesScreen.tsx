@@ -21,7 +21,7 @@ const FavouritesScreen = () => {
   }
 
   return (
-    <View className="flex-1 justify-center items-center bg-blue-300">
+    <View className="flex-1 justify-center items-center">
       <FlatList
         data={favouritedCats}
         keyExtractor={favouritedCat => favouritedCat.id.toString()}

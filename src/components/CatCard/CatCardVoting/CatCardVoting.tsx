@@ -1,5 +1,5 @@
-import React, {useMemo} from 'react';
-import {Text, View} from 'react-native';
+import React from 'react';
+import {View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons
 import useCatVotes from '../../../hooks/useCatVotes';
 interface CatCardVotingProps {
@@ -42,9 +42,6 @@ const CatCardVoting = ({imageId}: CatCardVotingProps) => {
       </View>
 
       {/* Center the Votes text both horizontally and vertically */}
-      <View className="w-full  py-2 items-center justify-center">
-        <Text>Votes:</Text>
-      </View>
     </View>
   );
 };

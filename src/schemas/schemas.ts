@@ -1,5 +1,5 @@
 import {z} from 'zod';
-
+// can make this file smaller
 export const BreedSchema = z.object({
   id: z.number(),
   name: z.string(),

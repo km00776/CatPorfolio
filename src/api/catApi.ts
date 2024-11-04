@@ -33,7 +33,7 @@ import {ZodSchema} from 'zod';
 const apiRequest = async <T>(
   url: string,
   options: RequestInit,
-  schema: ZodSchema<T>, // Schema is now required
+  schema: ZodSchema<T>,
 ): Promise<T> => {
   try {
     const response = await fetch(url, options);
@@ -72,7 +72,7 @@ export const postCatImage = async (
     uri,
     name: 'cat_image.jpg',
     type: 'image/jpeg',
-  } as unknown as Blob);
+  });
 
   return apiRequest<PostCatImageResponseType>(
     ENDPOINTS.IMAGES_UPLOAD_URL,
@@ -82,7 +82,6 @@ export const postCatImage = async (
       body: formData,
     },
     PostCatImageResponseSchema,
-    // Assuming no validation is needed for image upload
   );
 };
 
