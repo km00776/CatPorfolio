@@ -21,10 +21,11 @@ import {
   PostVoteTypeResponse,
   VoteType,
 } from '../types/voteTypes';
-import {API_KEY} from '@env';
+
+const apiKey = process.env.API_KEY || ''; // Default to an empty string
 
 const createHeaders = (contentType = 'application/json') => ({
-  'x-api-key': API_KEY,
+  'x-api-key': apiKey,
   'Content-Type': contentType,
 });
 
