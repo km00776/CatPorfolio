@@ -1,174 +1,145 @@
-import {CAT_API_BASE_URL} from '../constants/url';
-import {VoteType} from '../types/voteTypes';
+import {
+  CatType,
+  DeleteFavouritedCatResponseType,
+  FavouritedCatType,
+  PostCatImageResponseType,
+  PostFavouritedCatResponseType,
+} from 'types/catTypes';
+
+import {
+  CatSchema,
+  FavouritedCatSchema,
+  PostFavouritedCatResponseSchema,
+  DeleteFavouritedCatResponseSchema,
+  VoteSchema,
+  PostCatImageResponseSchema,
+  PostVoteResponseSchema,
+} from '../schemas/schemas';
+import {ENDPOINTS} from '../constants/url';
+import {
+  PostVoteRequestParams,
+  PostVoteTypeResponse,
+  VoteType,
+} from '../types/voteTypes';
 import {API_KEY} from '@env';
 
-const HEADERS = {
+const createHeaders = (contentType = 'application/json') => ({
   'x-api-key': API_KEY,
-};
+  'Content-Type': contentType,
+});
 
-export const fetchCats = async () => {
+import {ZodSchema} from 'zod';
+
+const apiRequest = async <T>(
+  url: string,
+  options: RequestInit,
+  schema: ZodSchema<T>, // Schema is now required
+): Promise<T> => {
   try {
-    const response = await fetch(CAT_API_BASE_URL, {
-      headers: HEADERS,
-    });
+    const response = await fetch(url, options);
     if (!response.ok) {
-      throw new Error('Network request was not ok');
+      throw new Error(`Network request failed with status ${response.status}`);
     }
-    const data = response.json();
-    return data;
+    const jsonData = await response.json();
+
+    const result = schema.safeParse(jsonData);
+    if (!result.success) {
+      throw new Error(`Validation failed: ${result.error}`);
+    }
+    return result.data;
   } catch (error) {
     throw new Error(
-      `Failed to fetch cats: ${
+      `Request to ${url} failed: ${
         error instanceof Error ? error.message : 'Unknown Error'
       }`,
     );
   }
 };
 
-export const postCatImage = async (uri: any) => {
-  // move formdata to hook
-  const formData = new FormData();
+export const fetchCats = async (): Promise<CatType[]> => {
+  return apiRequest<CatType[]>(
+    ENDPOINTS.GET_CATS_URL,
+    {headers: createHeaders()},
+    CatSchema.array(),
+  );
+};
 
+export const postCatImage = async (
+  uri: string,
+): Promise<PostCatImageResponseType> => {
+  const formData = new FormData();
   formData.append('file', {
     uri,
     name: 'cat_image.jpg',
     type: 'image/jpeg',
-  });
+  } as unknown as Blob);
 
-  try {
-    const response = await fetch(`https://api.thecatapi.com/v1/images/upload`, {
+  return apiRequest<PostCatImageResponseType>(
+    ENDPOINTS.IMAGES_UPLOAD_URL,
+    {
       method: 'POST',
-      headers: HEADERS,
-      // 'content-type': 'multipart/form-data', <-- WITHOUT THIS WE MIGHT GET AN ERROR
-
+      headers: createHeaders('multipart/form-data'),
       body: formData,
-    });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    throw new Error(
-      `Failed to post cat image: ${
-        error instanceof Error ? error.message : 'Unknown Error'
-      }`,
-    );
-  }
+    },
+    PostCatImageResponseSchema,
+    // Assuming no validation is needed for image upload
+  );
 };
 
-export const fetchFavouritedCats = async () => {
-  try {
-    const response = await fetch('https://api.thecatapi.com/v1/favourites', {
-      headers: HEADERS,
-    });
-
-    if (!response.ok) {
-      throw new Error('Network error when calling fetchFavouritedCats');
-    }
-    const data = response.json();
-    return data;
-  } catch (error) {
-    throw new Error(
-      `Failed to fetch favourited cats: ${
-        error instanceof Error ? error.message : 'Unknown Error'
-      }`,
-    );
-  }
+export const fetchFavouritedCats = async (): Promise<FavouritedCatType[]> => {
+  return apiRequest<FavouritedCatType[]>(
+    ENDPOINTS.FAVOURITES_URL,
+    {headers: createHeaders()},
+    FavouritedCatSchema.array(),
+  );
 };
 
-export const postFavouriteCat = async (imageId: string) => {
-  try {
-    const response = await fetch(`https://api.thecatapi.com/v1/favourites`, {
+export const postFavouriteCat = async (
+  imageId: string,
+): Promise<PostFavouritedCatResponseType> => {
+  return apiRequest(
+    ENDPOINTS.FAVOURITES_URL,
+    {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...HEADERS, // Ensure HEADERS includes your 'x-api-key'
-      },
+      headers: createHeaders(),
       body: JSON.stringify({image_id: imageId}),
-    });
-
-    if (!response.ok) {
-      throw new Error('Network error when calling fetchFavouritedCats');
-    }
-    const data = response.json();
-
-    return data;
-  } catch (error) {
-    throw new Error(
-      `Failed to postFavouriteCat cats: ${
-        error instanceof Error ? error.message : 'Unknown Error'
-      }`,
-    );
-  }
-};
-//DELETE
-export const deleteFavouritedCat = async (favouritedCatId: number) => {
-  try {
-    const response = await fetch(
-      `https://api.thecatapi.com/v1/favourites/${favouritedCatId}`,
-      {
-        headers: {
-          ...HEADERS,
-        },
-        method: 'DELETE',
-      },
-    );
-
-    if (!response.ok) {
-      throw new Error(`Failed to remove favourite with ID ${favouritedCatId}`);
-    }
-
-    // Await the response data if there's any (some DELETE endpoints return empty bodies)
-    const data = await response.json().catch(() => null); // Safely handle empty response
-
-    return data;
-  } catch (error) {
-    throw new Error(
-      `Failed to remove favourite: ${
-        error instanceof Error ? error.message : 'Unknown Error'
-      }`,
-    );
-  }
+    },
+    PostFavouritedCatResponseSchema,
+  );
 };
 
-export const fetchCatVotes = async () => {
-  try {
-    const response = await fetch('https://api.thecatapi.com/v1/votes', {
-      headers: HEADERS,
-    });
-    if (!response.ok) {
-      throw new Error('Network request was not ok');
-    }
-    const data = response.json();
-    return data;
-  } catch (error) {
-    throw new Error(
-      `Failed to fetch votes: ${
-        error instanceof Error ? error.message : 'Unknown Error'
-      }`,
-    );
-  }
+export const deleteFavouritedCat = async (
+  favouritedCatId: number,
+): Promise<DeleteFavouritedCatResponseType> => {
+  return apiRequest<DeleteFavouritedCatResponseType>(
+    ENDPOINTS.DELETE_FAVOURITES_URL(favouritedCatId),
+    {
+      method: 'DELETE',
+      headers: createHeaders(),
+    },
+    DeleteFavouritedCatResponseSchema,
+  );
 };
 
-export const postCatVote = async ({imageId, value}: VoteType) => {
-  try {
-    const response = await fetch('https://api.thecatapi.com/v1/votes', {
+export const fetchCatVotes = async (): Promise<VoteType[]> => {
+  return apiRequest<VoteType[]>(
+    ENDPOINTS.VOTES_URL,
+    {headers: createHeaders()},
+    VoteSchema.array(),
+  );
+};
+
+export const postCatVote = async ({
+  imageId,
+  value,
+}: PostVoteRequestParams): Promise<PostVoteTypeResponse> => {
+  return apiRequest<PostVoteTypeResponse>(
+    ENDPOINTS.VOTES_URL,
+    {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...HEADERS, // Ensure HEADERS includes your 'x-api-key'
-      },
+      headers: createHeaders(),
       body: JSON.stringify({image_id: imageId, value}),
-    });
-    if (!response.ok) {
-      throw new Error('Network request was not ok');
-    }
-    console.log('response', response);
-    const data = response.json();
-    return data;
-  } catch (error) {
-    throw new Error(
-      `Failed to post vote: ${
-        error instanceof Error ? error.message : 'Unknown Error'
-      }`,
-    );
-  }
+    },
+    PostVoteResponseSchema,
+  );
 };

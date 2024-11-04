@@ -18,7 +18,7 @@ const useFavouritedCats = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['favouritedCats']});
     },
-    onError: (error: any) => {
+    onError: error => {
       console.error('Error favoriting image:', error.message);
     },
   });
@@ -28,7 +28,7 @@ const useFavouritedCats = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['favouritedCats']});
     },
-    onError: (error: any) => {
+    onError: error => {
       console.error('Error unfavoriting image:', error.message);
     },
   });

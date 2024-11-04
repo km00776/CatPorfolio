@@ -17,8 +17,6 @@ const CatCard = ({imageUrl, imageId}: CatCardProps) => {
     deleteFavouritedCatMutation,
   } = useFavouritedCats();
 
-  console.log('favouritedCats', favouritedCats);
-
   const favouritedId = useMemo(() => {
     if (favouritedCats) {
       const favourite = favouritedCats.find(

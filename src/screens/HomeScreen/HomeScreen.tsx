@@ -5,7 +5,7 @@ import {View, FlatList, Text} from 'react-native';
 import useCats from '../../hooks/useCats';
 import CatCard from '../../components/CatCard/CatCard';
 import {CatType} from '../../types/catTypes';
-import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 const HomeScreen = () => {
   const {cats, isLoadingCats, isErrorCats} = useCats();

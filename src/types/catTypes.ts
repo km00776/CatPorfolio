@@ -1,24 +1,28 @@
-export interface CatType {
-  breed_ids: null;
-  breeds: []; // this should be a breed array, however, for this implementation its fine to keep as it is
-  created_at: string;
-  height: number;
-  id: string;
-  original_filename: string;
-  sub_id: null;
-  url: string;
-  width: number;
-}
-export interface FavouritedCatType {
-  id: number;
-  user_id: string;
-  image_id: string;
-  sub_id: string;
-  created_at: string;
-  image: FavouritedCatImage;
-}
+import {z} from 'zod';
+import {
+  BreedSchema,
+  CatSchema,
+  FavouritedCatSchema,
+  PostFavouritedCatResponseSchema,
+  DeleteFavouritedCatResponseSchema,
+  PostCatImageResponseSchema,
+} from '../schemas/schemas';
 
-export interface FavouritedCatImage {
-  id: string;
-  url: string;
-}
+// If the back-end types, we can use this update the types too, by updating schemas
+export type BreedType = z.infer<typeof BreedSchema>;
+
+export type CatType = z.infer<typeof CatSchema>;
+
+export type FavouritedCatType = z.infer<typeof FavouritedCatSchema>;
+
+export type PostFavouritedCatResponseType = z.infer<
+  typeof PostFavouritedCatResponseSchema
+>;
+
+export type DeleteFavouritedCatResponseType = z.infer<
+  typeof DeleteFavouritedCatResponseSchema
+>;
+
+export type PostCatImageResponseType = z.infer<
+  typeof PostCatImageResponseSchema
+>;

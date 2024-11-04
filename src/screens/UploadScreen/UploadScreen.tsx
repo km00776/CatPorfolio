@@ -3,7 +3,7 @@ import {Alert, Button} from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import useCats from '../../hooks/useCats';
 import {requestGalleryPermission} from '../../util/permission';
-import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 const UploadScreen = () => {
   const {postCatImageMutation} = useCats();
@@ -35,8 +35,7 @@ const UploadScreen = () => {
             Alert.alert('Image has successfully been uploaded');
             // Optional: Update state or give user feedback
           },
-          onError: (error: any, data) => {
-            console.log('error', error, 'data', data);
+          onError: () => {
             Alert.alert(
               'Upload Failed',
               'We were unable to upload your image. Please ensure you are uploading a valid image and try again.',
