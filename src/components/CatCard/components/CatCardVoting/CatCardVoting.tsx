@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {ActivityIndicator, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons
 import useCatVotes from '../../../../hooks/useCatVotes';
 interface CatCardVotingProps {
@@ -18,6 +18,10 @@ const CatCardVoting = ({imageId}: CatCardVotingProps) => {
     const data = {imageId, value: -1};
     postCatVoteMutation.mutate(data);
   };
+
+  if (postCatVoteMutation.isPending) {
+    return <ActivityIndicator />;
+  }
 
   return (
     <>

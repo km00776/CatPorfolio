@@ -1,5 +1,11 @@
 import React, {useMemo} from 'react';
-import {ImageBackground, TouchableOpacity, View, Text} from 'react-native';
+import {
+  ImageBackground,
+  TouchableOpacity,
+  View,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons
 import {FavouritedCatType} from '../../types/catTypes';
 import CatCardVoting from './components/CatCardVoting/CatCardVoting';
@@ -57,17 +63,22 @@ const CatCard = ({imageUrl, imageId}: CatCardProps) => {
       resizeMode="cover"
       className="w-4/5 h-96	 rounded-3xl border border-gray-300 my-4 overflow-hidden">
       <View className="flex-row	justify-end w-full">
-        <TouchableOpacity
-          onPress={onFavouritePress}
-          className="rounded-full bg-orange-100 p-2 mr-3 my-3">
-          <Icon
-            name={favouritedId ? 'heart' : 'heart-outline'}
-            size={20}
-            color={Colors.darkOrange}
-            accessible={true}
-            accessibilityLabel="Click this to favourite image"
-          />
-        </TouchableOpacity>
+        {postFavouriteCatMutation.isPending ||
+        deleteFavouritedCatMutation.isPending ? (
+          <ActivityIndicator />
+        ) : (
+          <TouchableOpacity
+            onPress={onFavouritePress}
+            className="rounded-full bg-orange-100 p-2 mr-3 my-3">
+            <Icon
+              name={favouritedId ? 'heart' : 'heart-outline'}
+              size={20}
+              color={Colors.darkOrange}
+              accessible={true}
+              accessibilityLabel="Click this to favourite image"
+            />
+          </TouchableOpacity>
+        )}
         <CatCardVoting imageId={imageId} />
       </View>
 
